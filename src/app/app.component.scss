@@ -1,0 +1,22 @@
+.container{
+    text-align: center;
+    padding: 10px;
+}
+.btn{
+    margin: 10px;
+    width: 10%;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background-color: #3f2815;
+    color: #c1dbef;
+    font-size: 18px;
+    &:hover{
+        cursor: pointer;
+        background-color: #c1dbef;
+        color: #3f2815;
+        border: 3px solid #3f2815;
+    }
+    
+}
+
