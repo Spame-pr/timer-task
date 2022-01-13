@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Subscription, timer } from 'rxjs';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { fromEvent, Subscription, take, tap, timer } from 'rxjs';
 
 
 @Component({
@@ -7,17 +7,20 @@ import { Subscription, timer } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
 
   houres: number = 0;
   minutes: number = 0;
   seconds: number = 0;
   initialTimer: number = 0
   startedTimer: boolean = false
-
   int: Subscription = new Subscription()
+  doubleClickSub: Subscription = new Subscription()
+
+  @ViewChild('doubleClick') dbClick: ElementRef
 
   constructor() { }
+
 
   startTimer() {
     this.int = timer(0, 1000).subscribe(count => {
@@ -42,10 +45,17 @@ export class AppComponent {
     this.startedTimer = !this.startedTimer
   }
   waitTimer() {
-
     this.int.unsubscribe()
     this.startedTimer = !this.startedTimer
+  }
 
+  dblClick() {
+    let lastClicked = 0;
+    this.doubleClickSub = fromEvent(this.dbClick.nativeElement, 'click').pipe(take(2), tap(v => {
+      const timeNow = new Date().getTime();
+      if (timeNow < (lastClicked + 300)) this.waitTimer();
+      lastClicked = timeNow;
+    })).subscribe();
   }
 
   resetTimer() {
@@ -59,5 +69,9 @@ export class AppComponent {
 
   transform(value: number) {
     return (value + '').length === 1 ? '0' + value : value + '';
+  }
+
+  ngOnDestroy(): void {
+    this.doubleClickSub.unsubscribe()
   }
 }

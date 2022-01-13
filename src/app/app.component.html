@@ -6,9 +6,9 @@
   <button (click)="startTimer()" class="btn" *ngIf='!startedTimer'>Start</button>
 
   <div *ngIf='startedTimer'>
-    <button (click)="stopTimer()" class="btn">Stop</button>
-    <button (dblclick)="waitTimer()" class="btn">Wait</button>
-    <button class="btn" (click)="resetTimer()">Reset</button>
+    <button type="button" (click)="stopTimer()" class="btn">Stop</button>
+    <button type="button" (click)="dblClick()" class="btn" #doubleClick>Wait</button>
+    <button type="button" class="btn" (click)="resetTimer()">Reset</button>
   </div>
 
 </div>
